@@ -43,6 +43,9 @@ nnoremap <silent> <space>l :bnext<CR>
 " toggle last two buffers
 nnoremap <space>u <c-^>
 
+"Remapping ; to :
+nnoremap ; :
+
 "switching vim panes
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
@@ -55,3 +58,43 @@ set splitright
 
 "colors
 set t_Co=256
+
+"makes buffers hide instead of close when switching
+set hidden
+
+"lots of stuff
+set nowrap
+set tabstop=2
+set autoindent
+set copyindent
+set shiftwidth=2
+set shiftround
+set showmatch
+set ignorecase
+set smartcase
+set smarttab
+set smartindent
+set hlsearch
+set incsearch
+set title 
+set visualbell
+set noerrorbells
+set expandtab
+
+"autocomplete for " ' { [ (
+inoremap {      {}<Left>
+inoremap {<CR>  {<CR>}<Esc>O
+inoremap {{     {
+inoremap {}     {}
+
+inoremap        (  ()<Left>
+inoremap <expr> )  strpart(getline('.'), col('.')-1, 1) == ")" ? "\<Right>" : ")"
+
+inoremap        [  []<Left>
+inoremap <expr> ]  strpart(getline('.'), col('.')-1, 1) == "]" ? "\<Right>" : "]"
+
+inoremap        ' ''<Left>
+inoremap <expr> ' strpart(getline('.'), col('.')-1, 1) == "\'" ? "\<Right>" : "\'\'\<Left>"
+
+inoremap        " ""<Left>
+inoremap <expr> " strpart(getline('.'), col('.')-1, 1) == "\"" ? "\<Right>" : "\"\"\<Left>"
