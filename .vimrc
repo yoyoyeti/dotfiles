@@ -43,9 +43,6 @@ nnoremap <silent> <space>l :bnext<CR>
 " toggle last two buffers
 nnoremap <space>u <c-^>
 
-"Remapping ; to :
-nnoremap ; :
-
 "switching vim panes
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
@@ -80,21 +77,3 @@ set title
 set visualbell
 set noerrorbells
 set expandtab
-
-"autocomplete for " ' { [ (
-inoremap {      {}<Left>
-inoremap {<CR>  {<CR>}<Esc>O
-inoremap {{     {
-inoremap {}     {}
-
-inoremap        (  ()<Left>
-inoremap <expr> )  strpart(getline('.'), col('.')-1, 1) == ")" ? "\<Right>" : ")"
-
-inoremap        [  []<Left>
-inoremap <expr> ]  strpart(getline('.'), col('.')-1, 1) == "]" ? "\<Right>" : "]"
-
-inoremap        ' ''<Left>
-inoremap <expr> ' strpart(getline('.'), col('.')-1, 1) == "\'" ? "\<Right>" : "\'\'\<Left>"
-
-inoremap        " ""<Left>
-inoremap <expr> " strpart(getline('.'), col('.')-1, 1) == "\"" ? "\<Right>" : "\"\"\<Left>"
