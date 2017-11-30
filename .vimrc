@@ -1,11 +1,9 @@
-set nocompatible              " be iMproved, required
+set nocompatible              " be improved, required
 filetype off                  " required
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
@@ -16,7 +14,6 @@ Plugin 'pangloss/vim-javascript' "javascript syntax stuff
 Plugin 'mxw/vim-jsx' "jsx syntax stuff
 Plugin 'vim-airline/vim-airline' "shows fancy bars with info at top and bottom
 Plugin 'tpope/vim-fugitive' "shows the git information in the fancy bars
-Plugin 'haya14busa/incsearch.vim' "makes searching better in general and allows the use of tab and shift + tab to navigate while searching
 Plugin 'Raimondi/delimitMate' "autocomplete in insert mode for quotes and things
 Plugin 'arcticicestudio/nord-vim' "theme
 Plugin 'chrisbra/Colorizer' "highlights colors
@@ -24,8 +21,69 @@ Plugin 'airblade/vim-gitgutter' "shows git diff information
 Plugin 'ntpeters/vim-better-whitespace' "shows trailing whitespace
 Plugin 'scrooloose/nerdcommenter' "commenting shortcuts
 Plugin 'scrooloose/nerdtree' "nerdtree file explored
-" All of your Plugins must be added before the following line
+Plugin 'vim-syntastic/syntastic' "syntax highligting stuff
+Plugin 'machakann/vim-highlightedyank' "highlights the text
+Plugin 'yuttie/comfortable-motion.vim' "scrolling stuff
+Plugin 'easymotion/vim-easymotion' "makes moving around easier
+Plugin 'haya14busa/incsearch.vim' "makes searching better in general and allows the use of tab and shift + tab to navigate while searching
+Plugin 'haya14busa/incsearch-easymotion.vim' "search that implements easymotion
+Plugin 'haya14busa/incsearch-fuzzy.vim' "makes searching fuzzy
+Plugin 'lifepillar/vim-mucomplete' "autocomplete stuff
+Plugin 'AndrewRadev/sideways.vim' "makes moving parameters around ezpz
+
+"All of your Plugins must be added before the following line
 call vundle#end()
+
+nnoremap <left> :SidewaysLeft<cr>
+nnoremap <right> :SidewaysRight<cr>
+
+"MUcomplete stuff
+set completeopt+=menuone
+
+inoremap <expr> <c-e> mucomplete#popup_exit("\<c-e>")
+inoremap <expr> <c-y> mucomplete#popup_exit("\<c-y>")
+inoremap <expr>  <cr> mucomplete#popup_exit("\<cr>")
+
+set completeopt+=noinsert
+set shortmess+=c   " Shut off completion messages
+set belloff+=ctrlg " If Vim beeps during completion
+
+"better easymotion keys
+map <Space>h <Plug>(easymotion-b)
+map <Space>j <Plug>(easymotion-j)
+map <Space>k <Plug>(easymotion-k)
+map <Space>l <Plug>(easymotion-w)
+map <Space>s <Plug>(easymotion-s)
+
+"incsearch.vim x fuzzy x vim-easymotion
+function! s:config_easyfuzzymotion(...) abort
+  return extend(copy({
+  \   'converters': [incsearch#config#fuzzy#converter()],
+  \   'modules': [incsearch#config#easymotion#module()],
+  \   'keymap': {"\<CR>": '<Over>(easymotion)'},
+  \   'is_expr': 0,
+  \   'is_stay': 1
+  \ }), get(a:, 1, {}))
+endfunction
+
+let g:comfortable_motion_no_default_key_mappings = 1
+nnoremap <silent> <down> :call comfortable_motion#flick(100)<CR>
+nnoremap <silent> <up> :call comfortable_motion#flick(-100)<CR>
+
+"makes space + / do a fuzzy easymotion search
+noremap <silent><expr> <Space>/ incsearch#go(<SID>config_easyfuzzymotion())
+
+"performs a non fuzzy easymotion search
+map / <Plug>(incsearch-easymotion-/)
+map ? <Plug>(incsearch-easymotion-?)
+
+"makes these binds use incsearch instead of normal search
+"map /  <Plug>(incsearch-forward)
+map ? <Plug>(incsearch-backward)
+map n <Plug>(incsearch-nohl-n)
+map N <Plug>(incsearch-nohl-N)
+map # <Plug>(incsearch-nohl-*)
+map * <Plug>(incsearch-nohl-#)
 
 "indenting stuff
 filetype plugin indent on
@@ -43,11 +101,28 @@ set noshowcmd
 "makes nerdtree close if it's the only window left
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
+"makes syntastic use pylint
+let g:syntastic_python_checkers = ['pylint']
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_cursor_column = 0
+let g:syntastic_always_populate_loc_list = 1
+
+let g:syntastic_mode_map = {
+		\ "mode": "passive",
+		\ "active_filetypes": [],
+		\ "passive_filetypes": [] }
+
+"makes yanked text highlighted
+map y <Plug>(highlightedyank)
+
 "makes control-n toggle nerdtree
 map <C-n> :NERDTreeToggle<CR>
 
-map <C-c> <plug>NERDCommenterToggle
-"shows extra space
+"makes control-c toggle comment things
+map // <plug>NERDCommenterToggle
+
+noremap <C-s> :StripWhitespace<CR>
 
 "theme
 colorscheme nord
@@ -61,38 +136,44 @@ set updatetime=250
 "makes gitgutter not may any keys
 let g:gitgutter_map_keys = 0
 
-"unbinds arrowkeys in normal mode
-noremap <Up> <Nop>
-noremap <Down> <Nop>
-noremap <Left> <Nop>
-noremap <Right> <Nop>
-
 "rempas capital J and K to jump paragraphs
-nnoremap <S-J> }
-nnoremap <S-K> {
+nnoremap J }
+nnoremap K {
 "remaps { and } to join with line before and join with line after
-nnoremap } <S-J>
+nnoremap } J
 nnoremap { -J
 "same thing but for visual mode as well
-vnoremap <S-J> }
-vnoremap <S-K> {
-vnoremap } <S-J>
+vnoremap J }
+vnoremap K {
+vnoremap } J
 vnoremap { -J
 
 "makes delimitMate match < with > as well as the defaults
 let delimitMate_matchpairs = "(:),[:],{:},<:>"
 
+"makes autocomplete do fancy stuff
 set complete=.,b,u,w,t,]
 
-"inserts new line behind without entering insert mode
-nnoremap < O<Esc>j
-"inserts new line after without entering insert mode
-nnoremap > o<Esc>k
+"only required one > or < to make adjust indent
+nnoremap < <<
+nnoremap > >>
+
+"makes pressing H/L insert a new line above/below cursor without entering insert mode
+"or moving the cursor
+map H O<Esc>j
+map L o<Esc>k
+
 "inserts new line where cursor is without entering insert mode
 nnoremap <CR> i<CR><Esc><BS>
 
 "makes one line appear above and below cursor at all times
 set scrolloff=1
+
+"makes pressing Y yank to the end of the line rather than the whole line
+nnoremap Y y$
+
+"makes tab completion in vim console insanely better
+set wildmode=longest,list
 
 "makes { and } skip folds
 set foldopen-=block
@@ -116,6 +197,7 @@ set backspace=indent,eol,start
 "fixing tabs
 set tabstop=2
 set shiftwidth=2
+set expandtab
 set shiftround
 set autoindent
 set copyindent
@@ -123,9 +205,9 @@ set smarttab
 set smartindent
 
 " switch between buffers with space h for prev and space l for next
-nnoremap <silent> <space>h :bprevious<CR>
-nnoremap <silent> <space>l :bnext<CR>
-" toggle last two buffers with space u
+nnoremap <silent> <space>b :bprevious<CR>
+nnoremap <silent> <space>n :bnext<CR>
+" toggle last two last buffers with space u
 nnoremap <space>u <c-^>
 
 "switching vim panes with ctrl + h/j/k/l
@@ -160,17 +242,6 @@ set nowrap
 "case sensitive when they are
 set ignorecase
 set smartcase
-
-"makes these binds use incsearch instead of normal search
-map /  <Plug>(incsearch-forward)
-map ?  <Plug>(incsearch-backward)
-map g/ <Plug>(incsearch-stay)
-map n  <Plug>(incsearch-nohl-n)
-map N  <Plug>(incsearch-nohl-N)
-map *  <Plug>(incsearch-nohl-*)
-map #  <Plug>(incsearch-nohl-#)
-map g* <Plug>(incsearch-nohl-g*)
-map g# <Plug>(incsearch-nohl-g#)
 
 "highlights all found search terms
 set hlsearch
