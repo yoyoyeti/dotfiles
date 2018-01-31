@@ -5,55 +5,52 @@ filetype off                  " required
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
+  Plugin 'VundleVim/Vundle.vim' "let Vundle manage Vundle, required
 
-Plugin 'junegunn/fzf' "fuzzy file search
-Plugin 'christoomey/vim-tmux-navigator' "makes using ctrl + h/j/k/l navigate vim and tmux panes
-Plugin 'pangloss/vim-javascript' "javascript syntax stuff
-Plugin 'mxw/vim-jsx' "jsx syntax stuff
-Plugin 'vim-airline/vim-airline' "shows fancy bars with info at top and bottom
-Plugin 'tpope/vim-fugitive' "shows the git information in the fancy bars
-Plugin 'Raimondi/delimitMate' "autocomplete in insert mode for quotes and things
-Plugin 'arcticicestudio/nord-vim' "theme
-Plugin 'chrisbra/Colorizer' "highlights colors
-Plugin 'airblade/vim-gitgutter' "shows git diff information
-Plugin 'ntpeters/vim-better-whitespace' "shows trailing whitespace
-Plugin 'scrooloose/nerdcommenter' "commenting shortcuts
-Plugin 'scrooloose/nerdtree' "nerdtree file explored
-Plugin 'vim-syntastic/syntastic' "syntax highligting stuff
-Plugin 'machakann/vim-highlightedyank' "highlights the text
-Plugin 'yuttie/comfortable-motion.vim' "scrolling stuff
-Plugin 'easymotion/vim-easymotion' "makes moving around easier
-Plugin 'haya14busa/incsearch.vim' "makes searching better in general and allows the use of tab and shift + tab to navigate while searching
-Plugin 'haya14busa/incsearch-easymotion.vim' "search that implements easymotion
-Plugin 'haya14busa/incsearch-fuzzy.vim' "makes searching fuzzy
-Plugin 'lifepillar/vim-mucomplete' "autocomplete stuff
-Plugin 'AndrewRadev/sideways.vim' "makes moving parameters around ezpz
+  Plugin 'junegunn/fzf' "fuzzy file search
+  Plugin 'junegunn/fzf.vim' "fuzzy file search
+  Plugin 'christoomey/vim-tmux-navigator' "makes using ctrl + h/j/k/l navigate vim and tmux panes
+  Plugin 'chemzqm/vim-jsx-improve' "jsx syntax highlighting
+  Plugin 'vim-airline/vim-airline' "shows fancy bars with info at top and bottom
+  Plugin 'tpope/vim-fugitive' "shows the git information in the fancy bars
+  Plugin 'Raimondi/delimitMate' "autocomplete in insert mode for quotes and things
+  Plugin 'arcticicestudio/nord-vim' "theme
+  Plugin 'chrisbra/Colorizer' "highlights colors
+  Plugin 'airblade/vim-gitgutter' "shows git diff information
+  Plugin 'ntpeters/vim-better-whitespace' "shows trailing whitespace
+  Plugin 'scrooloose/nerdcommenter' "commenting shortcuts
+  Plugin 'scrooloose/nerdtree' "nerdtree file explored
+  Plugin 'vim-syntastic/syntastic' "syntax highligting stuff
+  Plugin 'machakann/vim-highlightedyank' "highlights the text
+  Plugin 'yuttie/comfortable-motion.vim' "scrolling stuff
+  Plugin 'easymotion/vim-easymotion' "makes moving around easier
+  Plugin 'haya14busa/incsearch.vim' "makes searching better in general and allows the use of tab and shift + tab to navigate while searching
+  Plugin 'haya14busa/incsearch-easymotion.vim' "search that implements easymotion
+  Plugin 'haya14busa/incsearch-fuzzy.vim' "makes searching fuzzy
+  Plugin 'AndrewRadev/sideways.vim' "makes moving parameters around ezpz
+  Plugin 'ervandew/supertab' "tab completion
+  Plugin 'wellle/targets.vim' "more things to target
+  Plugin 'tpope/vim-surround' "makes wrapping things in stuff easier
+  Plugin 'tpope/vim-repeat' "makes things repeat with .
 
 "All of your Plugins must be added before the following line
 call vundle#end()
 
+set iskeyword+=\-
+
+"makes it so you can move parameters around with arrow keys
 nnoremap <left> :SidewaysLeft<cr>
 nnoremap <right> :SidewaysRight<cr>
 
-"MUcomplete stuff
-set completeopt+=menuone
-
-inoremap <expr> <c-e> mucomplete#popup_exit("\<c-e>")
-inoremap <expr> <c-y> mucomplete#popup_exit("\<c-y>")
-inoremap <expr>  <cr> mucomplete#popup_exit("\<cr>")
-
-set completeopt+=noinsert
-set shortmess+=c   " Shut off completion messages
-set belloff+=ctrlg " If Vim beeps during completion
-
 "better easymotion keys
-map <Space>h <Plug>(easymotion-b)
+map <Space>h <Plug>(easymotion-linebackward)
 map <Space>j <Plug>(easymotion-j)
 map <Space>k <Plug>(easymotion-k)
-map <Space>l <Plug>(easymotion-w)
+map <Space>l <Plug>(easymotion-lineforward)
+
 map <Space>s <Plug>(easymotion-s)
+
+map :W :w
 
 "incsearch.vim x fuzzy x vim-easymotion
 function! s:config_easyfuzzymotion(...) abort
@@ -122,6 +119,7 @@ map <C-n> :NERDTreeToggle<CR>
 "makes control-c toggle comment things
 map // <plug>NERDCommenterToggle
 
+"strips whitespace with ctrl-s
 noremap <C-s> :StripWhitespace<CR>
 
 "theme
