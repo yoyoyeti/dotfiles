@@ -119,7 +119,7 @@ map y <Plug>(highlightedyank)
 "makes control-n toggle nerdtree
 map <C-n> :NERDTreeToggle<CR>
 
-"makes control-c toggle comment things
+"makes // toggle comment things
 map // <plug>NERDCommenterToggle
 
 "strips whitespace with ctrl-s
