@@ -22,7 +22,6 @@ Plugin 'scrooloose/nerdcommenter' "commenting shortcuts
 Plugin 'scrooloose/nerdtree' "nerdtree file explored
 Plugin 'vim-syntastic/syntastic' "syntax highligting stuff
 Plugin 'machakann/vim-highlightedyank' "highlights the text
-Plugin 'yuttie/comfortable-motion.vim' "scrolling stuff
 Plugin 'easymotion/vim-easymotion' "makes moving around easier
 Plugin 'haya14busa/incsearch.vim' "makes searching better in general and allows the use of tab and shift + tab to navigate while searching
 Plugin 'haya14busa/incsearch-easymotion.vim' "search that implements easymotion
@@ -35,6 +34,14 @@ Plugin 'tpope/vim-repeat' "makes things repeat with .
 
 "All of your Plugins must be added before the following line
 call vundle#end()
+
+"makes moving lines or blocks up or down really easy with arrow keys
+nnoremap <down> :m .+1<CR>==
+nnoremap <up> :m .-2<CR>==
+inoremap <down> <Esc>:m .+1<CR>==gi
+inoremap <up> <Esc>:m .-2<CR>==gi
+vnoremap <down> :m '>+1<CR>gv=gv
+vnoremap <up> :m '<-2<CR>gv=gv
 
 "mades terms with dashes single term instead of multiple terms
 set iskeyword+=\-
@@ -63,11 +70,6 @@ function! s:config_easyfuzzymotion(...) abort
         \   'is_stay': 1
         \ }), get(a:, 1, {}))
 endfunction
-
-"animated scroll options
-let g:comfortable_motion_no_default_key_mappings = 1
-nnoremap <silent> <down> :call comfortable_motion#flick(100)<CR>
-nnoremap <silent> <up> :call comfortable_motion#flick(-100)<CR>
 
 "makes space + / do a fuzzy easymotion search
 noremap <silent><expr> <Space>/ incsearch#go(<SID>config_easyfuzzymotion())
@@ -116,11 +118,19 @@ let g:syntastic_mode_map = {
 "makes yanked text highlighted
 map y <Plug>(highlightedyank)
 
+"makes yanking into * register (clipboard) easier also highlights yanked stuff
+nnoremap <c-y> "*<Plug>(highlightedyank)
+vnoremap <c-y> "*<Plug>(highlightedyank)
+
+"makes pasting from * register (clipboard) easier
+nnoremap <c-p> "*p
+vnoremap <c-p> "*p
+
 "makes control-n toggle nerdtree
 map <C-n> :NERDTreeToggle<CR>
 
 "makes control-c toggle comment things
-map // <plug>NERDCommenterToggle
+map // <leader>cc
 
 "strips whitespace with ctrl-s
 noremap <C-s> :StripWhitespace<CR>
