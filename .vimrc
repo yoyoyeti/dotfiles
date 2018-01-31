@@ -129,7 +129,7 @@ vnoremap <c-p> "*p
 "makes control-n toggle nerdtree
 map <C-n> :NERDTreeToggle<CR>
 
-"makes control-c toggle comment things
+"makes // toggle comment things
 map // <leader>cc
 
 "strips whitespace with ctrl-s
