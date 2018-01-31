@@ -5,37 +5,38 @@ filetype off                  " required
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
-  Plugin 'VundleVim/Vundle.vim' "let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim' "let Vundle manage Vundle, required
 
-  Plugin 'junegunn/fzf' "fuzzy file search
-  Plugin 'junegunn/fzf.vim' "fuzzy file search
-  Plugin 'christoomey/vim-tmux-navigator' "makes using ctrl + h/j/k/l navigate vim and tmux panes
-  Plugin 'chemzqm/vim-jsx-improve' "jsx syntax highlighting
-  Plugin 'vim-airline/vim-airline' "shows fancy bars with info at top and bottom
-  Plugin 'tpope/vim-fugitive' "shows the git information in the fancy bars
-  Plugin 'Raimondi/delimitMate' "autocomplete in insert mode for quotes and things
-  Plugin 'arcticicestudio/nord-vim' "theme
-  Plugin 'chrisbra/Colorizer' "highlights colors
-  Plugin 'airblade/vim-gitgutter' "shows git diff information
-  Plugin 'ntpeters/vim-better-whitespace' "shows trailing whitespace
-  Plugin 'scrooloose/nerdcommenter' "commenting shortcuts
-  Plugin 'scrooloose/nerdtree' "nerdtree file explored
-  Plugin 'vim-syntastic/syntastic' "syntax highligting stuff
-  Plugin 'machakann/vim-highlightedyank' "highlights the text
-  Plugin 'yuttie/comfortable-motion.vim' "scrolling stuff
-  Plugin 'easymotion/vim-easymotion' "makes moving around easier
-  Plugin 'haya14busa/incsearch.vim' "makes searching better in general and allows the use of tab and shift + tab to navigate while searching
-  Plugin 'haya14busa/incsearch-easymotion.vim' "search that implements easymotion
-  Plugin 'haya14busa/incsearch-fuzzy.vim' "makes searching fuzzy
-  Plugin 'AndrewRadev/sideways.vim' "makes moving parameters around ezpz
-  Plugin 'ervandew/supertab' "tab completion
-  Plugin 'wellle/targets.vim' "more things to target
-  Plugin 'tpope/vim-surround' "makes wrapping things in stuff easier
-  Plugin 'tpope/vim-repeat' "makes things repeat with .
+Plugin 'junegunn/fzf' "fuzzy file search
+Plugin 'junegunn/fzf.vim' "fuzzy file search
+Plugin 'christoomey/vim-tmux-navigator' "makes using ctrl + h/j/k/l navigate vim and tmux panes
+Plugin 'chemzqm/vim-jsx-improve' "jsx syntax highlighting
+Plugin 'vim-airline/vim-airline' "shows fancy bars with info at top and bottom
+Plugin 'tpope/vim-fugitive' "shows the git information in the fancy bars
+Plugin 'Raimondi/delimitMate' "autocomplete in insert mode for quotes and things
+Plugin 'arcticicestudio/nord-vim' "theme
+Plugin 'chrisbra/Colorizer' "highlights colors
+Plugin 'airblade/vim-gitgutter' "shows git diff information
+Plugin 'ntpeters/vim-better-whitespace' "shows trailing whitespace
+Plugin 'scrooloose/nerdcommenter' "commenting shortcuts
+Plugin 'scrooloose/nerdtree' "nerdtree file explored
+Plugin 'vim-syntastic/syntastic' "syntax highligting stuff
+Plugin 'machakann/vim-highlightedyank' "highlights the text
+Plugin 'yuttie/comfortable-motion.vim' "scrolling stuff
+Plugin 'easymotion/vim-easymotion' "makes moving around easier
+Plugin 'haya14busa/incsearch.vim' "makes searching better in general and allows the use of tab and shift + tab to navigate while searching
+Plugin 'haya14busa/incsearch-easymotion.vim' "search that implements easymotion
+Plugin 'haya14busa/incsearch-fuzzy.vim' "makes searching fuzzy
+Plugin 'AndrewRadev/sideways.vim' "makes moving parameters around ezpz
+Plugin 'ervandew/supertab' "tab completion
+Plugin 'wellle/targets.vim' "more things to target
+Plugin 'tpope/vim-surround' "makes wrapping things in stuff easier
+Plugin 'tpope/vim-repeat' "makes things repeat with .
 
 "All of your Plugins must be added before the following line
 call vundle#end()
 
+"mades terms with dashes single term instead of multiple terms
 set iskeyword+=\-
 
 "makes it so you can move parameters around with arrow keys
@@ -47,22 +48,23 @@ map <Space>h <Plug>(easymotion-linebackward)
 map <Space>j <Plug>(easymotion-j)
 map <Space>k <Plug>(easymotion-k)
 map <Space>l <Plug>(easymotion-lineforward)
-
 map <Space>s <Plug>(easymotion-s)
 
+"makes accidently typing :W not so bad
 map :W :w
 
 "incsearch.vim x fuzzy x vim-easymotion
 function! s:config_easyfuzzymotion(...) abort
   return extend(copy({
-  \   'converters': [incsearch#config#fuzzy#converter()],
-  \   'modules': [incsearch#config#easymotion#module()],
-  \   'keymap': {"\<CR>": '<Over>(easymotion)'},
-  \   'is_expr': 0,
-  \   'is_stay': 1
-  \ }), get(a:, 1, {}))
+        \   'converters': [incsearch#config#fuzzy#converter()],
+        \   'modules': [incsearch#config#easymotion#module()],
+        \   'keymap': {"\<CR>": '<Over>(easymotion)'},
+        \   'is_expr': 0,
+        \   'is_stay': 1
+        \ }), get(a:, 1, {}))
 endfunction
 
+"animated scroll options
 let g:comfortable_motion_no_default_key_mappings = 1
 nnoremap <silent> <down> :call comfortable_motion#flick(100)<CR>
 nnoremap <silent> <up> :call comfortable_motion#flick(-100)<CR>
@@ -90,6 +92,7 @@ set number
 "shows syntax highlighting
 syntax on
 
+"Hides ugly stuff on the bottom
 set noshowmode
 set noruler
 set laststatus=0
@@ -106,9 +109,9 @@ let g:syntastic_cursor_column = 0
 let g:syntastic_always_populate_loc_list = 1
 
 let g:syntastic_mode_map = {
-		\ "mode": "passive",
-		\ "active_filetypes": [],
-		\ "passive_filetypes": [] }
+      \ "mode": "passive",
+      \ "active_filetypes": [],
+      \ "passive_filetypes": [] }
 
 "makes yanked text highlighted
 map y <Plug>(highlightedyank)
@@ -173,7 +176,7 @@ nnoremap Y y$
 "makes tab completion in vim console insanely better
 set wildmode=longest,list
 
-"makes { and } skip folds
+"makes J and K skip folds
 set foldopen-=block
 "makes folds work but not automatically fold on open
 set foldmethod=indent
@@ -202,7 +205,7 @@ set copyindent
 set smarttab
 set smartindent
 
-" switch between buffers with space h for prev and space l for next
+" switch between buffers with space b for prev and space n for next
 nnoremap <silent> <space>b :bprevious<CR>
 nnoremap <silent> <space>n :bnext<CR>
 " toggle last two last buffers with space u
@@ -236,7 +239,7 @@ set hidden
 "prevents lines frow wrapping
 set nowrap
 
-"makes searching for text ignore case when no capital leters aren't present and
+"makes searching for text ignore case when no capital leters are present and
 "case sensitive when they are
 set ignorecase
 set smartcase
