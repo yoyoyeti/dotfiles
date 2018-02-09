@@ -36,17 +36,17 @@ Plugin 'tpope/vim-repeat' "makes things repeat with .
 call vundle#end()
 
 "makes moving lines or blocks up or down really easy with arrow keys
-nnoremap <down> :m .+1<CR>==
-nnoremap <up> :m .-2<CR>==
-vnoremap <down> :m '>+1<CR>gv=gv
-vnoremap <up> :m '<-2<CR>gv=gv
+nnoremap <silent><down> :m .+1<CR>==
+nnoremap <silent><up> :m .-2<CR>==
+vnoremap <silent><down> :m '>+1<CR>gv=gv
+vnoremap <silent><up> :m '<-2<CR>gv=gv
 
 "mades terms with dashes single term instead of multiple terms
 set iskeyword+=\-
 
 "makes it so you can move parameters around with arrow keys
-nnoremap <left> :SidewaysLeft<cr>
-nnoremap <right> :SidewaysRight<cr>
+nnoremap <silent><left> :SidewaysLeft<cr>
+nnoremap <silent><right> :SidewaysRight<cr>
 
 "better easymotion keys
 map <Space>h <Plug>(easymotion-linebackward)
@@ -77,7 +77,7 @@ map / <Plug>(incsearch-easymotion-/)
 map ? <Plug>(incsearch-easymotion-?)
 
 "makes double tapping r refresh .vimrc
-nnoremap rr :source ~/.vimrc<CR>
+nnoremap <silent>rr :source ~/.vimrc<CR>
 
 "makes these binds use incsearch instead of normal search
 "map /  <Plug>(incsearch-forward)
@@ -92,6 +92,7 @@ filetype plugin indent on
 
 "shows line numbers
 set number
+
 "shows syntax highlighting
 syntax on
 
@@ -129,13 +130,13 @@ map y <Plug>(highlightedyank)
 map Y <Plug>(highlightedyank)$
 
 "makes control-n toggle nerdtree
-map <C-n> :NERDTreeToggle<CR>
+map <silent><C-n> :NERDTreeToggle<CR>
 
 "makes control-c toggle comment things
 map // <leader>c<space>
 
 "strips whitespace with ctrl-s
-noremap <C-s> :StripWhitespace<CR>
+noremap <silent><C-s> :StripWhitespace<CR>
 
 "theme
 colorscheme nord
@@ -193,7 +194,7 @@ set foldmethod=indent
 set foldlevelstart=99
 
 "binds ctrl-x to close buffer without closing window
-nnoremap <C-X> :bp<bar>sp<bar>bn<bar>bd<CR>
+nnoremap <silent><C-X> :bp<bar>sp<bar>bn<bar>bd<CR>
 
 " statusline style
 let g:airline_theme='nord'
@@ -215,8 +216,9 @@ set smarttab
 set smartindent
 
 " switch between buffers with space b for prev and space n for next
-nnoremap <silent> <space>b :bprevious<CR>
-nnoremap <silent> <space>n :bnext<CR>
+nnoremap <silent><space>b :bprevious<CR>
+nnoremap <silent><space>n :bnext<CR>
+
 " toggle last two last buffers with space u
 nnoremap <space>u <c-^>
 
@@ -227,7 +229,7 @@ nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
 "binds ctrl f to fuzzy search
-nnoremap <C-F> :GFiles<CR>
+nnoremap <silent><C-F> :GFiles<CR>
 
 "more natural splits
 set splitbelow
