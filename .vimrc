@@ -38,8 +38,6 @@ call vundle#end()
 "makes moving lines or blocks up or down really easy with arrow keys
 nnoremap <down> :m .+1<CR>==
 nnoremap <up> :m .-2<CR>==
-inoremap <down> <Esc>:m .+1<CR>==gi
-inoremap <up> <Esc>:m .-2<CR>==gi
 vnoremap <down> :m '>+1<CR>gv=gv
 vnoremap <up> :m '<-2<CR>gv=gv
 
@@ -78,6 +76,9 @@ noremap <silent><expr> <Space>/ incsearch#go(<SID>config_easyfuzzymotion())
 map / <Plug>(incsearch-easymotion-/)
 map ? <Plug>(incsearch-easymotion-?)
 
+"makes double tapping r refresh .vimrc
+nnoremap rr :source ~/.vimrc<CR>
+
 "makes these binds use incsearch instead of normal search
 "map /  <Plug>(incsearch-forward)
 map ? <Plug>(incsearch-backward)
@@ -115,22 +116,23 @@ let g:syntastic_mode_map = {
       \ "active_filetypes": [],
       \ "passive_filetypes": [] }
 
+"makes yanking into * register (clipboard) easier also highlights yanked stuff
+map <c-y> "*<Plug>(highlightedyank)
+
+"makes pasting from * register (clipboard) easier
+map <c-p> "*p
+
 "makes yanked text highlighted
 map y <Plug>(highlightedyank)
 
-"makes yanking into * register (clipboard) easier also highlights yanked stuff
-nnoremap <c-y> "*<Plug>(highlightedyank)
-vnoremap <c-y> "*<Plug>(highlightedyank)
-
-"makes pasting from * register (clipboard) easier
-nnoremap <c-p> "*p
-vnoremap <c-p> "*p
+"makes pressing Y yank to the end of the line rather than the whole line
+map Y <Plug>(highlightedyank)$
 
 "makes control-n toggle nerdtree
 map <C-n> :NERDTreeToggle<CR>
 
-"makes // toggle comment things
-map // <leader>cc
+"makes control-c toggle comment things
+map // <leader>c<space>
 
 "strips whitespace with ctrl-s
 noremap <C-s> :StripWhitespace<CR>
@@ -180,9 +182,6 @@ nnoremap <CR> i<CR><Esc><BS>
 "makes one line appear above and below cursor at all times
 set scrolloff=1
 
-"makes pressing Y yank to the end of the line rather than the whole line
-nnoremap Y y$
-
 "makes tab completion in vim console insanely better
 set wildmode=longest,list
 
@@ -228,7 +227,7 @@ nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
 "binds ctrl f to fuzzy search
-nnoremap <C-F> :FZF<CR>
+nnoremap <C-F> :GFiles<CR>
 
 "more natural splits
 set splitbelow
