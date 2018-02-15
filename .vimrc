@@ -20,7 +20,6 @@ Plugin 'airblade/vim-gitgutter' "shows git diff information
 Plugin 'ntpeters/vim-better-whitespace' "shows trailing whitespace
 Plugin 'scrooloose/nerdcommenter' "commenting shortcuts
 Plugin 'scrooloose/nerdtree' "nerdtree file explored
-Plugin 'vim-syntastic/syntastic' "syntax highligting stuff
 Plugin 'machakann/vim-highlightedyank' "highlights the text
 Plugin 'easymotion/vim-easymotion' "makes moving around easier
 Plugin 'haya14busa/incsearch.vim' "makes searching better in general and allows the use of tab and shift + tab to navigate while searching
@@ -34,6 +33,21 @@ Plugin 'tpope/vim-repeat' "makes things repeat with .
 
 "All of your Plugins must be added before the following line
 call vundle#end()
+
+"makes space open nerdtree nodes
+let NERDTreeMapActivateNode='<space><space>'
+
+"makes nerdtree more pretty
+let NERDTreeMinimalUI = 1
+let NERDTreeDirArrows = 1
+
+"makes it so nerdtree won't ask you if you want to delete the buffer of the
+"file you just deleted
+let NERDTreeAutoDeleteBuffer = 1
+
+"makes nerdtree open if no file was specified
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
 "makes moving lines or blocks up or down really easy with arrow keys
 nnoremap <silent><down> :m .+1<CR>==
@@ -49,11 +63,13 @@ nnoremap <silent><left> :SidewaysLeft<cr>
 nnoremap <silent><right> :SidewaysRight<cr>
 
 "better easymotion keys
-map <Space>h <Plug>(easymotion-linebackward)
+map <Space>h <Plug>(easymotion-b)
 map <Space>j <Plug>(easymotion-j)
 map <Space>k <Plug>(easymotion-k)
-map <Space>l <Plug>(easymotion-lineforward)
-map <Space>s <Plug>(easymotion-s)
+map <Space>l <Plug>(easymotion-w)
+
+"makes smartcase work with easymotion
+let g:EasyMotion_smartcase = 1
 
 "makes accidently typing :W not so bad
 map :W :w
@@ -72,15 +88,14 @@ endfunction
 "makes space + / do a fuzzy easymotion search
 noremap <silent><expr> <Space>/ incsearch#go(<SID>config_easyfuzzymotion())
 
-"performs a non fuzzy easymotion search
-map / <Plug>(incsearch-easymotion-/)
-map ? <Plug>(incsearch-easymotion-?)
-
 "makes double tapping r refresh .vimrc
 nnoremap <silent>rr :source ~/.vimrc<CR>
+"makes double tapping ee edit .vimrc
+nnoremap <silent>ee :e ~/.vimrc<CR>
 
 "makes these binds use incsearch instead of normal search
 "map /  <Plug>(incsearch-forward)
+map / <Plug>(incsearch-forward)
 map ? <Plug>(incsearch-backward)
 map n <Plug>(incsearch-nohl-n)
 map N <Plug>(incsearch-nohl-N)
@@ -104,18 +119,6 @@ set noshowcmd
 
 "makes nerdtree close if it's the only window left
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-
-"makes syntastic use pylint
-let g:syntastic_python_checkers = ['pylint']
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_cursor_column = 0
-let g:syntastic_always_populate_loc_list = 1
-
-let g:syntastic_mode_map = {
-      \ "mode": "passive",
-      \ "active_filetypes": [],
-      \ "passive_filetypes": [] }
 
 "makes yanking into * register (clipboard) easier also highlights yanked stuff
 map <c-y> "*<Plug>(highlightedyank)
@@ -228,8 +231,9 @@ nnoremap <C-k> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
-"binds ctrl f to fuzzy search
+"binds ctrl f to fuzzy search for files that are tracked by git
 nnoremap <silent><C-F> :GFiles<CR>
+nnoremap <silent><C-G> :GFiles?<CR>
 
 "more natural splits
 set splitbelow
