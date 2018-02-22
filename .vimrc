@@ -30,12 +30,15 @@ Plugin 'ervandew/supertab' "tab completion
 Plugin 'wellle/targets.vim' "more things to target
 Plugin 'tpope/vim-surround' "makes wrapping things in stuff easier
 Plugin 'tpope/vim-repeat' "makes things repeat with .
+Plugin 'jreybert/vimagit' "adds commit functionality to vim wit <leader>M
 
 "All of your Plugins must be added before the following line
 call vundle#end()
 
-"makes space open nerdtree nodes
-let NERDTreeMapActivateNode='<space><space>'
+let g:magit_default_fold_level=2
+
+"makes 'h' open nerdtree nodes
+let NERDTreeMapActivateNode='h'
 
 "makes nerdtree more pretty
 let NERDTreeMinimalUI = 1
@@ -44,10 +47,6 @@ let NERDTreeDirArrows = 1
 "makes it so nerdtree won't ask you if you want to delete the buffer of the
 "file you just deleted
 let NERDTreeAutoDeleteBuffer = 1
-
-"makes nerdtree open if no file was specified
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
 "makes moving lines or blocks up or down really easy with arrow keys
 nnoremap <silent><down> :m .+1<CR>==
@@ -90,11 +89,10 @@ noremap <silent><expr> <Space>/ incsearch#go(<SID>config_easyfuzzymotion())
 
 "makes double tapping r refresh .vimrc
 nnoremap <silent>rr :source ~/.vimrc<CR>
-"makes double tapping ee edit .vimrc
-nnoremap <silent>ee :e ~/.vimrc<CR>
+" binds control-e to edit .vimrc
+nnoremap <silent><c-e> :e ~/.vimrc<CR>
 
 "makes these binds use incsearch instead of normal search
-"map /  <Plug>(incsearch-forward)
 map / <Plug>(incsearch-forward)
 map ? <Plug>(incsearch-backward)
 map n <Plug>(incsearch-nohl-n)
@@ -202,6 +200,7 @@ nnoremap <silent><C-X> :bp<bar>sp<bar>bn<bar>bd<CR>
 " statusline style
 let g:airline_theme='nord'
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#formatter = 'jsformatter'
 let g:airline_powerline_fonts = 1
 
 "fixing backspace
@@ -242,9 +241,6 @@ set splitright
 "makes colors autohighlight for html and css files
 let g:colorizer_auto_filetype='css,html'
 
-"colors
-set t_Co=256
-
 "makes braces not get highlighted
 let g:loaded_matchparen= 1
 
@@ -256,7 +252,6 @@ set nowrap
 
 "makes searching for text ignore case when no capital leters are present and
 "case sensitive when they are
-set ignorecase
 set smartcase
 
 "highlights all found search terms
