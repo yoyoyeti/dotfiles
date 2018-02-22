@@ -1,39 +1,43 @@
-set nocompatible              " be improved, required
-filetype off                  " required
+set runtimepath^=~/.vim runtimepath+=~/.vim/after
+let &packpath = &runtimepath
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+call plug#begin('~/.local/share/nvim/plugged')
 
-Plugin 'VundleVim/Vundle.vim' "let Vundle manage Vundle, required
+  Plug 'junegunn/fzf' "fuzzy file search
+  Plug 'junegunn/fzf.vim' "fuzzy file search
+  Plug 'christoomey/vim-tmux-navigator' "makes using ctrl + h/j/k/l navigate vim and tmux panes
+  Plug 'chemzqm/vim-jsx-improve' "jsx syntax highlighting
+  Plug 'vim-airline/vim-airline' "shows fancy bars with info at top and bottom
+  Plug 'tpope/vim-fugitive' "shows the git information in the fancy bars
+  Plug 'Raimondi/delimitMate' "autocomplete in insert mode for quotes and things
+  Plug 'arcticicestudio/nord-vim' "theme
+  Plug 'chrisbra/Colorizer' "highlights colors
+  Plug 'airblade/vim-gitgutter' "shows git diff information
+  Plug 'ntpeters/vim-better-whitespace' "shows trailing whitespace
+  Plug 'scrooloose/nerdcommenter' "commenting shortcuts
+  Plug 'scrooloose/nerdtree' "nerdtree file explored
+  Plug 'machakann/vim-highlightedyank' "highlights the text
+  Plug 'easymotion/vim-easymotion' "makes moving around easier
+  Plug 'haya14busa/incsearch.vim' "makes searching better in general and allows the use of tab and shift + tab to navigate while searching
+  Plug 'haya14busa/incsearch-easymotion.vim' "search that implements easymotion
+  Plug 'haya14busa/incsearch-fuzzy.vim' "makes searching fuzzy
+  Plug 'AndrewRadev/sideways.vim' "makes moving parameters around ezpz
+  Plug 'ervandew/supertab' "tab completion
+  Plug 'wellle/targets.vim' "more things to target
+  Plug 'tpope/vim-surround' "makes wrapping things in stuff easier
+  Plug 'tpope/vim-repeat' "makes things repeat with .
+  Plug 'jreybert/vimagit' "adds commit functionality to vim wit <leader>M
+  Plug 'w0rp/ale' "linting stuff
 
-Plugin 'junegunn/fzf' "fuzzy file search
-Plugin 'junegunn/fzf.vim' "fuzzy file search
-Plugin 'christoomey/vim-tmux-navigator' "makes using ctrl + h/j/k/l navigate vim and tmux panes
-Plugin 'chemzqm/vim-jsx-improve' "jsx syntax highlighting
-Plugin 'vim-airline/vim-airline' "shows fancy bars with info at top and bottom
-Plugin 'tpope/vim-fugitive' "shows the git information in the fancy bars
-Plugin 'Raimondi/delimitMate' "autocomplete in insert mode for quotes and things
-Plugin 'arcticicestudio/nord-vim' "theme
-Plugin 'chrisbra/Colorizer' "highlights colors
-Plugin 'airblade/vim-gitgutter' "shows git diff information
-Plugin 'ntpeters/vim-better-whitespace' "shows trailing whitespace
-Plugin 'scrooloose/nerdcommenter' "commenting shortcuts
-Plugin 'scrooloose/nerdtree' "nerdtree file explored
-Plugin 'machakann/vim-highlightedyank' "highlights the text
-Plugin 'easymotion/vim-easymotion' "makes moving around easier
-Plugin 'haya14busa/incsearch.vim' "makes searching better in general and allows the use of tab and shift + tab to navigate while searching
-Plugin 'haya14busa/incsearch-easymotion.vim' "search that implements easymotion
-Plugin 'haya14busa/incsearch-fuzzy.vim' "makes searching fuzzy
-Plugin 'AndrewRadev/sideways.vim' "makes moving parameters around ezpz
-Plugin 'ervandew/supertab' "tab completion
-Plugin 'wellle/targets.vim' "more things to target
-Plugin 'tpope/vim-surround' "makes wrapping things in stuff easier
-Plugin 'tpope/vim-repeat' "makes things repeat with .
-Plugin 'jreybert/vimagit' "adds commit functionality to vim wit <leader>M
+call plug#end()
 
-"All of your Plugins must be added before the following line
-call vundle#end()
+"linting stuff
+let g:ale_fixers = {
+\   'javascript': ['eslint'],
+\}
+
+"fixes tmux navigating in neovim
+nnoremap <silent> <BS> :TmuxNavigateLeft<cr>
 
 let g:magit_default_fold_level=2
 
@@ -87,10 +91,10 @@ endfunction
 "makes space + / do a fuzzy easymotion search
 noremap <silent><expr> <Space>/ incsearch#go(<SID>config_easyfuzzymotion())
 
-"makes double tapping r refresh .vimrc
-nnoremap <silent>rr :source ~/.vimrc<CR>
-" binds control-e to edit .vimrc
-nnoremap <silent><c-e> :e ~/.vimrc<CR>
+"makes double tapping r refresh nvim init
+nnoremap <silent>rr :source ~/.config/nvim/init.vim<CR>
+" binds control-e to edit nvim init
+nnoremap <silent><c-e> :e ~/.config/nvim/init.vim<CR>
 
 "makes these binds use incsearch instead of normal search
 map / <Plug>(incsearch-forward)
