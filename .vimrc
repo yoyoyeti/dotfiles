@@ -1,6 +1,13 @@
 set runtimepath^=~/.vim runtimepath+=~/.vim/after
 let &packpath = &runtimepath
 
+" Install vim-plug if it's not there
+if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
+  silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
 call plug#begin('~/.local/share/nvim/plugged')
 
   Plug 'junegunn/fzf' "fuzzy file search
@@ -28,18 +35,44 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'tpope/vim-repeat' "makes things repeat with .
   Plug 'jreybert/vimagit' "adds commit functionality to vim wit <leader>M
   Plug 'w0rp/ale' "linting stuff
+  Plug 'aquach/vim-http-client' "http client thing
+  Plug 'elzr/vim-json' "better json highlighting and syntax stuff
+  Plug 'ryanoasis/vim-devicons' "adds icons to nerdtree
+  Plug 'tiagofumo/vim-nerdtree-syntax-highlight' "adds colors to icons in nerdtree
 
 call plug#end()
 
-"linting stuff
+"makes leader + c clear the http response window if that's the focused buffer
+nnoremap <silent><expr><nowait> <leader>c (expand('%:t') ==? "__HTTP_Client_Response__" ? "ggVGd" : "")
+"closes the http response buffer with 'q' if that's the focused buffer
+nnoremap <silent><expr><nowait> q (expand('%:t') ==? "__HTTP_Client_Response__" ? ":q<CR>" : "")
+"makes leader + H open my requests file if I'm not there, and send the request if I am
+nnoremap <expr><nowait><silent> <leader>h (expand('%:t') ==? ".http_requests.py" ? ":HTTPClientDoRequest<CR>" : ":e ~/workspace/.http_requests.py<CR>")
+
+"makes http client responses formated in json instead of js
+let g:http_client_json_ft = 'json'
+"keeps previous responses
+let g:http_client_preserve_responses = 1
+
+"makes ale use eslint to fix js files
 let g:ale_fixers = {
 \   'javascript': ['eslint'],
 \}
 
+"if (has("termguicolors"))
+  "set termguicolors
+"endif
+
 "fixes tmux navigating in neovim
 nnoremap <silent> <BS> :TmuxNavigateLeft<cr>
 
+"makes magit open file and hunk folds by default
 let g:magit_default_fold_level=2
+"automagically updates gitgutter stuff
+autocmd User VimagitUpdateFile
+  \ if ( exists("*gitgutter#process_buffer") ) |
+  \ 	call gitgutter#process_buffer(bufnr(g:magit_last_updated_buffer), 0) |
+  \ endif
 
 "makes 'h' open nerdtree nodes
 let NERDTreeMapActivateNode='h'
@@ -235,6 +268,7 @@ nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
 "binds ctrl f to fuzzy search for files that are tracked by git
+nnoremap <silent><leader>, :Colors<CR>
 nnoremap <silent><C-F> :GFiles<CR>
 nnoremap <silent><C-G> :GFiles?<CR>
 
@@ -246,7 +280,7 @@ set splitright
 let g:colorizer_auto_filetype='css,html'
 
 "makes braces not get highlighted
-let g:loaded_matchparen= 1
+let g:loaded_matchparen = 1
 
 "makes buffers hide instead of close when switching
 set hidden
@@ -256,6 +290,7 @@ set nowrap
 
 "makes searching for text ignore case when no capital leters are present and
 "case sensitive when they are
+set ignorecase
 set smartcase
 
 "highlights all found search terms
@@ -271,3 +306,6 @@ set noerrorbells
 
 "removes esc delay
 set timeoutlen=1000 ttimeoutlen=0
+
+"clears the search from the last session
+let @/ = '' 
