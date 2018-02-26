@@ -54,8 +54,8 @@ let g:http_client_json_ft = 'json'
 "keeps previous responses
 let g:http_client_preserve_responses = 1
 
-"makes ale use eslint to fix js files
-let g:ale_fixers = {
+"makes ale only use eslint to find linting errors
+let g:ale_linters = {
 \   'javascript': ['eslint'],
 \}
 
@@ -307,5 +307,4 @@ set noerrorbells
 "removes esc delay
 set timeoutlen=1000 ttimeoutlen=0
 
-"clears the search from the last session
-let @/ = '' 
+let @/ = ''
