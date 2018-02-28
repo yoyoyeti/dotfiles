@@ -38,9 +38,9 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'aquach/vim-http-client' "http client thing
   Plug 'elzr/vim-json' "better json highlighting and syntax stuff
   Plug 'ryanoasis/vim-devicons' "adds icons to nerdtree
-  Plug 'idanarye/vim-merginal' "git branch toob
-  Plug 'devnul1/heman'
-  Plug 'devnul1/vim-airline-themes'
+  Plug 'idanarye/vim-merginal' "git branch tool
+  Plug 'devnul1/heman' "colorscheme
+  Plug 'devnul1/vim-airline-themes' "airline colorschemes
 
 call plug#end()
 
