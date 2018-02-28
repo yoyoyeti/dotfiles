@@ -174,10 +174,10 @@ noremap <silent><C-s> :StripWhitespace<CR>
 "theme
 colorscheme heman
 "makes selected item in dropdown a diffrent color than the dropdown itself
-highlight PmenuSel ctermfg=2 ctermbg=3 guifg=#dadada guibg=#638ffa
+hi PmenuSel guifg=#dadada guibg=#638ffa
 
 "changes search color
-hi Search cterm=NONE ctermfg=cyan ctermbg=red
+hi Search gui=NONE guifg=#dadada guibg=#f95a00
 
 "makes vim update more often
 set updatetime=250
