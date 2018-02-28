@@ -38,16 +38,21 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'aquach/vim-http-client' "http client thing
   Plug 'elzr/vim-json' "better json highlighting and syntax stuff
   Plug 'ryanoasis/vim-devicons' "adds icons to nerdtree
-  Plug 'tiagofumo/vim-nerdtree-syntax-highlight' "adds colors to icons in nerdtree
+  Plug 'idanarye/vim-merginal' "git branch tool
+  Plug 'devnul1/heman' "colorscheme
+  Plug 'devnul1/vim-airline-themes' "airline colorschemes
 
 call plug#end()
 
+"makes vim not use terminal colors and relies on its own colorscheme
+set termguicolors
+
+"makes leader + H open my requests file if I'm not there, and send the request if I am
+nnoremap <expr><nowait><silent> <leader>h (expand('%:t') ==? ".http_requests.py" ? ":HTTPClientDoRequest<CR>" : ":e ~/workspace/.http_requests.py<CR>")
 "makes leader + c clear the http response window if that's the focused buffer
 nnoremap <silent><expr><nowait> <leader>c (expand('%:t') ==? "__HTTP_Client_Response__" ? "ggVGd" : "")
 "closes the http response buffer with 'q' if that's the focused buffer
 nnoremap <silent><expr><nowait> q (expand('%:t') ==? "__HTTP_Client_Response__" ? ":q<CR>" : "")
-"makes leader + H open my requests file if I'm not there, and send the request if I am
-nnoremap <expr><nowait><silent> <leader>h (expand('%:t') ==? ".http_requests.py" ? ":HTTPClientDoRequest<CR>" : ":e ~/workspace/.http_requests.py<CR>")
 
 "makes http client responses formated in json instead of js
 let g:http_client_json_ft = 'json'
@@ -58,10 +63,6 @@ let g:http_client_preserve_responses = 1
 let g:ale_linters = {
 \   'javascript': ['eslint'],
 \}
-
-"if (has("termguicolors"))
-  "set termguicolors
-"endif
 
 "fixes tmux navigating in neovim
 nnoremap <silent> <BS> :TmuxNavigateLeft<cr>
@@ -146,12 +147,6 @@ set number
 "shows syntax highlighting
 syntax on
 
-"Hides ugly stuff on the bottom
-set noshowmode
-set noruler
-set laststatus=0
-set noshowcmd
-
 "makes nerdtree close if it's the only window left
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
@@ -177,10 +172,12 @@ map // <leader>c<space>
 noremap <silent><C-s> :StripWhitespace<CR>
 
 "theme
-colorscheme nord
+colorscheme heman
+"makes selected item in dropdown a diffrent color than the dropdown itself
+hi PmenuSel guifg=#dadada guibg=#638ffa
 
 "changes search color
-hi Search cterm=NONE ctermfg=cyan ctermbg=red
+hi Search gui=NONE guifg=#dadada guibg=#f95a00
 
 "makes vim update more often
 set updatetime=250
@@ -235,7 +232,7 @@ set foldlevelstart=99
 nnoremap <silent><C-X> :bp<bar>sp<bar>bn<bar>bd<CR>
 
 " statusline style
-let g:airline_theme='nord'
+let g:airline_theme='angr'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#formatter = 'jsformatter'
 let g:airline_powerline_fonts = 1
@@ -293,8 +290,6 @@ set nowrap
 set ignorecase
 set smartcase
 
-"highlights all found search terms
-set hlsearch
 "automatically un-highlights when you do anything
 let g:incsearch#auto_nohlsearch = 1
 
@@ -307,5 +302,5 @@ set noerrorbells
 "removes esc delay
 set timeoutlen=1000 ttimeoutlen=0
 
-"clears the search from the last session	
-let @/ = ''
+"clears last search
+"let @/ = ''
