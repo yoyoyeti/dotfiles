@@ -41,14 +41,36 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'idanarye/vim-merginal' "git branch tool
   Plug 'devnul1/heman' "colorscheme
   Plug 'devnul1/vim-airline-themes' "airline colorschemes
+  Plug 'sodapopcan/vim-twiggy' "branch managing extension fugitive
 
 call plug#end()
+
+nnoremap <silent><leader>T :Twiggy<CR>
+
+"makes whitespace go away on save but not show otherwise
+let b:better_whitespace_enabled = 1
+let g:strip_whitespace_on_save = 1
+
+nnoremap <leader>a :Ag<CR>
+
+"makes leader + w write the buffer
+nnoremap <leader>w :w<CR>
+
+"makes file automatically update if changes were made outside
+set autoread
+
+"enables mouse
+set mouse=nicr
+
+"vim-devicons options
+let g:WebDevIconsOS = 'Darwin'
+let g:WebDevIconsUnicodeDecorateFolderNodes = 1
 
 "makes vim not use terminal colors and relies on its own colorscheme
 set termguicolors
 
 "makes leader + H open my requests file if I'm not there, and send the request if I am
-nnoremap <expr><nowait><silent> <leader>h (expand('%:t') ==? ".http_requests.py" ? ":HTTPClientDoRequest<CR>" : ":e ~/workspace/.http_requests.py<CR>")
+nnoremap <expr><nowait><silent> <leader>H (expand('%:t') ==? ".http_requests.py" ? ":HTTPClientDoRequest<CR>" : ":e ~/workspace/.http_requests.py<CR>")
 "makes leader + c clear the http response window if that's the focused buffer
 nnoremap <silent><expr><nowait> <leader>c (expand('%:t') ==? "__HTTP_Client_Response__" ? "ggVGd" : "")
 "closes the http response buffer with 'q' if that's the focused buffer
@@ -69,11 +91,8 @@ nnoremap <silent> <BS> :TmuxNavigateLeft<cr>
 
 "makes magit open file and hunk folds by default
 let g:magit_default_fold_level=2
-"automagically updates gitgutter stuff
-autocmd User VimagitUpdateFile
-  \ if ( exists("*gitgutter#process_buffer") ) |
-  \ 	call gitgutter#process_buffer(bufnr(g:magit_last_updated_buffer), 0) |
-  \ endif
+"makes vimagit automagically enter insert mode when you start your commit
+autocmd User VimagitEnterCommit startinsert
 
 "makes 'h' open nerdtree nodes
 let NERDTreeMapActivateNode='h'
@@ -123,12 +142,12 @@ function! s:config_easyfuzzymotion(...) abort
 endfunction
 
 "makes space + / do a fuzzy easymotion search
-noremap <silent><expr> <Space>/ incsearch#go(<SID>config_easyfuzzymotion())
+noremap <silent><expr> <leader>/ incsearch#go(<SID>config_easyfuzzymotion())
 
 "makes double tapping r refresh nvim init
-nnoremap <silent>rr :source ~/.config/nvim/init.vim<CR>
+nnoremap <silent><leader>r :source ~/.config/nvim/init.vim<CR>
 " binds control-e to edit nvim init
-nnoremap <silent><c-e> :e ~/.config/nvim/init.vim<CR>
+nnoremap <silent><leader>e :e ~/.config/nvim/init.vim<CR>
 
 "makes these binds use incsearch instead of normal search
 map / <Plug>(incsearch-forward)
@@ -165,9 +184,6 @@ map Y <Plug>(highlightedyank)$
 "makes control-n toggle nerdtree
 map <silent><C-n> :NERDTreeToggle<CR>
 
-"makes control-c toggle comment things
-map // <leader>c<space>
-
 "strips whitespace with ctrl-s
 noremap <silent><C-s> :StripWhitespace<CR>
 
@@ -182,7 +198,7 @@ hi Search gui=NONE guifg=#dadada guibg=#f95a00
 "makes vim update more often
 set updatetime=250
 
-"makes gitgutter not may any keys
+"makes gitgutter not map any keys
 let g:gitgutter_map_keys = 0
 
 "rempas capital J and K to jump paragraphs
@@ -203,7 +219,7 @@ let delimitMate_matchpairs = "(:),[:],{:},<:>"
 "makes autocomplete do fancy stuff
 set complete=.,b,u,w,t,]
 
-"only required one > or < to make adjust indent
+"only requires one > or < to adjust indent
 nnoremap < <<
 nnoremap > >>
 
@@ -238,7 +254,6 @@ let g:airline#extensions#tabline#formatter = 'jsformatter'
 let g:airline_powerline_fonts = 1
 
 "fixing backspace
-set backspace=2
 set backspace=indent,eol,start
 
 "fixing tabs
@@ -302,5 +317,7 @@ set noerrorbells
 "removes esc delay
 set timeoutlen=1000 ttimeoutlen=0
 
-"clears last search
-"let @/ = ''
+" after a re-source, fix syntax matching issues (concealing brackets):
+if exists('g:loaded_webdevicons')
+    call webdevicons#softRefresh()
+endif
