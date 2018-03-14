@@ -4,47 +4,87 @@ let &packpath = &runtimepath
 " Install vim-plug if it's not there
 if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
   silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
 call plug#begin('~/.local/share/nvim/plugged')
 
-  Plug 'junegunn/fzf' "fuzzy file search
-  Plug 'junegunn/fzf.vim' "fuzzy file search
-  Plug 'christoomey/vim-tmux-navigator' "makes using ctrl + h/j/k/l navigate vim and tmux panes
-  Plug 'chemzqm/vim-jsx-improve' "jsx syntax highlighting
-  Plug 'vim-airline/vim-airline' "shows fancy bars with info at top and bottom
-  Plug 'tpope/vim-fugitive' "shows the git information in the fancy bars
-  Plug 'Raimondi/delimitMate' "autocomplete in insert mode for quotes and things
-  Plug 'arcticicestudio/nord-vim' "theme
-  Plug 'chrisbra/Colorizer' "highlights colors
-  Plug 'airblade/vim-gitgutter' "shows git diff information
-  Plug 'ntpeters/vim-better-whitespace' "shows trailing whitespace
-  Plug 'scrooloose/nerdcommenter' "commenting shortcuts
-  Plug 'scrooloose/nerdtree' "nerdtree file explored
-  Plug 'machakann/vim-highlightedyank' "highlights the text
-  Plug 'easymotion/vim-easymotion' "makes moving around easier
-  Plug 'haya14busa/incsearch.vim' "makes searching better in general and allows the use of tab and shift + tab to navigate while searching
-  Plug 'haya14busa/incsearch-easymotion.vim' "search that implements easymotion
-  Plug 'haya14busa/incsearch-fuzzy.vim' "makes searching fuzzy
-  Plug 'AndrewRadev/sideways.vim' "makes moving parameters around ezpz
-  Plug 'ervandew/supertab' "tab completion
-  Plug 'wellle/targets.vim' "more things to target
-  Plug 'tpope/vim-surround' "makes wrapping things in stuff easier
-  Plug 'tpope/vim-repeat' "makes things repeat with .
-  Plug 'jreybert/vimagit' "adds commit functionality to vim wit <leader>M
-  Plug 'w0rp/ale' "linting stuff
-  Plug 'aquach/vim-http-client' "http client thing
-  Plug 'elzr/vim-json' "better json highlighting and syntax stuff
-  Plug 'ryanoasis/vim-devicons' "adds icons to nerdtree
-  Plug 'idanarye/vim-merginal' "git branch tool
-  Plug 'devnul1/heman' "colorscheme
-  Plug 'devnul1/vim-airline-themes' "airline colorschemes
-  Plug 'sodapopcan/vim-twiggy' "branch managing extension fugitive
+"Stuff I've added changes to
+Plug 'lobstrr/heman' "colorscheme
+Plug 'lobstrr/vim-airline-themes' "airline colorschemes
+Plug 'lobstrr/vim-twiggy' "branch managing extension fugitive
+
+"Git stuff
+Plug 'tpope/vim-fugitive' "shows the git information in the fancy bars
+Plug 'jreybert/vimagit' "adds commit functionality to vim wit <leader>M
+Plug 'idanarye/vim-merginal' "git branch tool
+
+"visual
+Plug 'ryanoasis/vim-devicons' "adds icons to nerdtree
+Plug 'yggdroot/indentline' "indent stuff
+Plug 'airblade/vim-gitgutter' "shows git diff information
+Plug 'haya14busa/incsearch.vim' "makes searching better in general and allows the use of tab and shift + tab to navigate while searching
+Plug 'vim-airline/vim-airline' "shows fancy bars with info at top and bottom
+Plug 'ntpeters/vim-better-whitespace' "shows trailing whitespace
+Plug 'machakann/vim-highlightedyank' "highlights the text
+
+"language stuff
+Plug 'w0rp/ale' "linting stuff
+Plug 'Shougo/deoplete.nvim'
+Plug 'elzr/vim-json' "better json highlighting and syntax stuff
+Plug 'chrisbra/Colorizer' "highlights colors
+Plug 'chemzqm/vim-jsx-improve' "jsx syntax highlighting
+Plug 'fatih/vim-go'
+Plug 'nsf/gocode', { 'rtp': 'nvim', 'do': '~/.local/share/nvim/plugged/gocode/nvim/symlink.sh' }
+Plug 'zchee/deoplete-go', { 'do': 'make'}
+
+"all the other general stuff
+Plug 'junegunn/fzf' "fuzzy file search
+Plug 'junegunn/fzf.vim' "fuzzy file search
+Plug 'christoomey/vim-tmux-navigator' "makes using ctrl + h/j/k/l navigate vim and tmux panes
+Plug 'Raimondi/delimitMate' "autocomplete in insert mode for quotes and things
+Plug 'scrooloose/nerdcommenter' "commenting shortcuts
+Plug 'scrooloose/nerdtree' "nerdtree file explored
+Plug 'easymotion/vim-easymotion' "makes moving around easier
+Plug 'haya14busa/incsearch-easymotion.vim' "search that implements easymotion
+Plug 'haya14busa/incsearch-fuzzy.vim' "makes searching fuzzy
+Plug 'AndrewRadev/sideways.vim' "makes moving parameters around ezpz
+Plug 'wellle/targets.vim' "more things to target
+Plug 'tpope/vim-surround' "makes wrapping things in stuff easier
+Plug 'tpope/vim-repeat' "makes things repeat with .
+Plug 'aquach/vim-http-client' "http client thing
 
 call plug#end()
 
+let g:deoplete#enable_at_startup = 1
+
+"makes tabbing in deoplete better
+"term
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ deoplete#mappings#manual_complete()
+
+function! s:check_back_space() abort "{{{
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction"}}}
+
+" use tab to backward cycle
+inoremap <silent><expr><s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
+
+"mappings for Plug stuff
+nnoremap <leader>pi :PlugInstall<CR>
+nnoremap <leader>pu :PlugUpdate<CR>
+nnoremap <leader>pc :PlugClean<CR>
+
+"Indent guide
+let g:indentLine_char = '│'
+let g:indentLine_enabled = 1
+let g:indentLine_color_gui = '#575675'
+
+"makes leader T start Twiggy
 nnoremap <silent><leader>T :Twiggy<CR>
 
 "makes whitespace go away on save but not show otherwise
@@ -81,10 +121,17 @@ let g:http_client_json_ft = 'json'
 "keeps previous responses
 let g:http_client_preserve_responses = 1
 
+" Error and warning signs.
+let g:ale_sign_error = '⤫'
+let g:ale_sign_warning = '⚠'
+
+"disable errors opening buggy bottom window
+let g:ale_set_loclist = 0
+
 "makes ale only use eslint to find linting errors
 let g:ale_linters = {
-\   'javascript': ['eslint'],
-\}
+      \   'javascript': ['eslint'],
+      \}
 
 "fixes tmux navigating in neovim
 nnoremap <silent> <BS> :TmuxNavigateLeft<cr>
@@ -252,6 +299,8 @@ let g:airline_theme='angr'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#formatter = 'jsformatter'
 let g:airline_powerline_fonts = 1
+" Enable integration with airline.
+let g:airline#extensions#ale#enabled = 1
 
 "fixing backspace
 set backspace=indent,eol,start
@@ -317,7 +366,34 @@ set noerrorbells
 "removes esc delay
 set timeoutlen=1000 ttimeoutlen=0
 
-" after a re-source, fix syntax matching issues (concealing brackets):
+"after a re-source, fix syntax matching issues (concealing brackets):
 if exists('g:loaded_webdevicons')
-    call webdevicons#softRefresh()
+  call webdevicons#softRefresh()
 endif
+
+"go tab stuff
+au FileType go set noexpandtab
+au FileType go set shiftwidth=4
+au FileType go set softtabstop=4
+au FileType go set tabstop=4
+
+"go highlight
+let g:go_highlight_build_constraints = 1
+let g:go_highlight_extra_types = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_structs = 1
+let g:go_highlight_types = 1
+
+"makes vim-go not remap K to getting go doc
+let g:go_doc_keywordprg_enabled = 0
+
+"Go auto import deps
+let g:go_fmt_command = "goimports"
+
+"stops loclist from displaying
+let g:go_fmt_fail_silently = 1
+
+set completeopt=menu
