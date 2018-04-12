@@ -15,6 +15,8 @@ Plug 'lobstrr/heman' "colorscheme
 Plug 'lobstrr/vim-airline-themes' "airline colorschemes
 Plug 'lobstrr/vim-twiggy' "branch managing extension fugitive
 
+Plug 'rakr/vim-two-firewatch'
+
 "Git stuff
 Plug 'tpope/vim-fugitive' "shows the git information in the fancy bars
 Plug 'jreybert/vimagit' "adds commit functionality to vim wit <leader>M
@@ -38,6 +40,8 @@ Plug 'chemzqm/vim-jsx-improve' "jsx syntax highlighting
 Plug 'fatih/vim-go'
 Plug 'nsf/gocode', { 'rtp': 'nvim', 'do': '~/.local/share/nvim/plugged/gocode/nvim/symlink.sh' }
 Plug 'zchee/deoplete-go', { 'do': 'make'}
+Plug 'derekwyatt/vim-scala'
+Plug 'digitaltoad/vim-pug'
 
 "all the other general stuff
 Plug 'junegunn/fzf' "fuzzy file search
@@ -80,9 +84,10 @@ nnoremap <leader>pu :PlugUpdate<CR>
 nnoremap <leader>pc :PlugClean<CR>
 
 "Indent guide
-let g:indentLine_char = '│'
-let g:indentLine_enabled = 1
-let g:indentLine_color_gui = '#575675'
+"let g:indentLine_char = '│'
+"let g:indentLine_enabled = 1
+"let g:indentLine_color_gui = '#575675'
+let g:indentLine_enabled = 0
 
 "makes leader T start Twiggy
 nnoremap <silent><leader>T :Twiggy<CR>
@@ -235,7 +240,10 @@ map <silent><C-n> :NERDTreeToggle<CR>
 noremap <silent><C-s> :StripWhitespace<CR>
 
 "theme
-colorscheme heman
+set background=dark
+let g:two_firewatch_italics=1
+colo two-firewatch
+"
 "makes selected item in dropdown a diffrent color than the dropdown itself
 hi PmenuSel guifg=#dadada guibg=#638ffa
 
